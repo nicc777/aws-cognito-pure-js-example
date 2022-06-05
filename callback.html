@@ -1,0 +1,82 @@
+<html>
+<head>
+    <title>Cognito Authentication Test - CALLBACK</title>
+    <script type="application/javascript" src="hashes.min.js"></script>
+    <script type="application/javascript" src="crypto-js.min.js"></script>
+    <script type="application/javascript" src="webapp.js"></script>
+</head>
+
+<body>
+    <p id="messageLine">Obtaining authorization...</p>
+    <hr />
+    <p>
+        <button onclick="goHome()">Home</button>
+        <button onclick="goLogout()">Logout</button>
+    </p>
+</body>
+
+<script type="application/javascript">
+
+    function id_callback_type() {
+        let params = (new URL(document.location)).searchParams;
+        console.log("Checking for error condition");
+        if (params.get("error_description")) {
+            document.getElementById("messageLine").innerText = "Error Message: " + params.get("error_description");
+            return;
+        }
+        console.log("Matching State");
+        if (params.get("state")) {
+            if (sessionStorage.getItem('state') != params.get("state")) {
+                document.getElementById("messageLine").innerText = "Error Message: State Mismatch";
+                return;
+            }
+        }
+        console.log("Building data for obtaining authorization token");
+        var data = {
+            "grant_type": "authorization_code",
+            "code": params.get("code"),
+            "client_id": cognitoClientId,
+            "redirect_uri": "http://localhost:8080/callback.html",
+            "code_verifier": base64URL(sessionStorage.getItem('verifier'))
+        }
+        console.log("----------------------------------------");
+        console.dir(data);
+        console.log("----------------------------------------");
+        console.log("Encoding data");
+        const encoded_data = Object.keys(data).map((key) => {
+            return encodeURIComponent(key) + '=' + encodeURIComponent(data[key]);
+        }).join('&');
+        console.log("URl Encoded Data: " + encoded_data);
+        var cognitoRequestUrl = "https://" + cognitoAuthDomain + "/oauth2/token";
+        console.log("Requesting token from " + cognitoRequestUrl);
+        console.log("----------------------------------------");
+        postDataUrlEncoded(cognitoRequestUrl, encoded_data)
+        .then(responseData => {
+            console.log(responseData);
+            if (responseData['error']) {
+                document.getElementById("messageLine").innerText = "Error Message: " + responseData['error'];
+                return;
+            }
+            if (responseData['access_token']) { 
+                sessionStorage.setItem('access_token', responseData['access_token']);
+            }
+            if (responseData['refresh_token']) { 
+                sessionStorage.setItem('refresh_token', responseData['refresh_token']);
+            }
+            if (responseData['token_type']) { 
+                sessionStorage.setItem('token_type', responseData['token_type']);
+            }
+            if (responseData['expires_in']) { 
+                sessionStorage.setItem('expires_at', Math.floor(Date.now() / 1000) + responseData['expires_in']);
+            }
+            getProfile("/index.html");
+        });
+        console.log("----------------------------------------");
+
+    }
+
+    id_callback_type();
+
+</script>
+
+</html>

@@ -1,0 +1,39 @@
+<html>
+<head>
+    <title>Cognito Authentication Test</title>
+    <script type="application/javascript" src="webapp.js"></script>
+</head>
+
+<body>
+    <h3>COGNITO AUTHORIZATION FLOW WITH PKCE TESTING</h3>
+    <div id="testNavigation" hidden>
+        <hr />
+        <p>
+            <ul>
+                <li><a href="pure-js.html">Test using plain old JavaScript</a></li>
+            </ul>
+        </p>
+    </div>
+    <div id="logoutNavigation" hidden>
+        <hr />
+        <p>
+            <button onclick="goLogout()">Logout</button> <div id="userEmailDiv" style="display: inline;"></div>
+        </p>
+    </div>
+</body>
+
+<script type="application/javascript">
+
+    if (isLoggedIn()) {
+        var userEmail = sessionStorage.getItem("userEmail");
+        document.getElementById("logoutNavigation").hidden = false;
+        document.getElementById("testNavigation").hidden = true;
+        document.getElementById("userEmailDiv").innerText = " " + userEmail;
+    } else {
+        document.getElementById("logoutNavigation").hidden = true;
+        document.getElementById("testNavigation").hidden = false;
+    }
+
+</script>
+
+</html>

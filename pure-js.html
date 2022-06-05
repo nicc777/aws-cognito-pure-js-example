@@ -1,0 +1,46 @@
+<html>
+<head>
+    <title>Cognito Authentication Test</title>
+    <!-- <script type="application/javascript" src="amazon-cognito-identity.min.js"></script> -->
+    <script type="application/javascript" src="hashes.min.js"></script>
+
+    <!--
+        References:
+
+            https://tonyxu-io.github.io/pkce-generator/
+            https://cdnjs.com/libraries/crypto-js
+            https://github.com/brix/crypto-js
+    -->
+        
+    
+    <script type="application/javascript" src="crypto-js.min.js"></script>
+    <script type="application/javascript" src="webapp.js"></script>
+    
+</head>
+
+<body>
+    <h3>TEST USING PLAIN JAVASCRIPT AND MINIMAL DEPENDENCIES</h3>
+    <hr />
+    <p>
+        Current Login Status: <strong><div style="display: inline;" id="loginStatus">unknown</div></strong>
+    </p>
+    <hr />
+    <p>
+        <button onclick="loginFunction()" id="actionButton">Login</button> |
+        <button onclick="goHome()" id="goHomeButtom">HOME</button>
+    </p>
+</body>
+
+<script type="application/javascript">
+
+    // Startup
+    if (isLoggedIn()) {
+        document.getElementById("loginStatus").innerText = "Already Logged In";
+        goHome();
+    } else {
+        document.getElementById("loginStatus").innerText = "Not Logged In";
+    }
+
+</script>
+
+</html>

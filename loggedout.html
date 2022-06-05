@@ -1,0 +1,43 @@
+<html>
+<head>
+    <title>Cognito Authentication Test - CALLBACK</title>
+    <script type="application/javascript" src="webapp.js"></script>
+</head>
+
+<body>
+    <p id="messageLine">Busy logging out....</p>
+    <hr />
+    <p>
+        <a href="index.html">HOME</a>
+    </p>
+</body>
+
+<script type="application/javascript">
+
+    if (isLoggedIn()) {
+    
+        var data = {
+            "AccessToken": sessionStorage.getItem('access_token')
+        }
+
+        clearSessionStorage();
+        postDataJsonAwsCognito("GlobalSignOut", data).then(
+            responseData => {
+                console.log(JSON.stringify(responseData));
+                if (responseData['error']) {
+                    document.getElementById("messageLine").innerText = "Error Message: " + responseData['error'];
+                    return;
+                }
+                document.getElementById("messageLine").innerHTML = "Redirecting to home page. If it does not work automatically, <a href=\"/index.html\">click here</a>";
+                goHome();
+            }
+        );
+
+    } else {
+        document.getElementById("messageLine").innerHTML = "NOT LOGGED IN... Redirecting to home page. If it does not work automatically, <a href=\"/index.html\">click here</a>";
+        goHome();
+    }
+
+</script>
+
+</html>
