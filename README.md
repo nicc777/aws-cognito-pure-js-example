@@ -4,7 +4,7 @@ An example implementation of AWS Cognito with a Web Application using pure JavaS
 
 Please refer to the following BLOG entry for the detailed walk-through of this example code:
 
-* Online: coming soon...
+* Online: [Published 2022-06-06](https://www.nicc777.com/blog/2022/2022-06-06.html)
 * GitHub: [Source for the blog post dated 2022-06-06](https://github.com/nicc777/nicc777-com-site/blob/main/site-src/docs/blog/2022/2022-06-06.md)
 
 # Security Information
