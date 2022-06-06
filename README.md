@@ -21,10 +21,23 @@ Please note that the following known security issues exist:
 
 Basic steps:
 
-_**Step 1**_: Start an Nginx Docker Instance
+_**Step 1**_: Update your Cognito configuration in `webapp.js`
+
+```javascript
+var awsRegion = "PLEASE-SET-ME";            // Example: eu-central-1
+var cognitoUserPoolId = "PLEASE-SET-ME";    // Example: eu-central-1_XXXXXXXXX (this example does not point to a real ID)
+var cognitoClientId = "PLEASE-SET-ME";      // Example: 1234567890abcdefghijklomnp (this example does not point to a real ID)
+var cognitoAuthDomain = "PLEASE-SET-ME";    // Example: https://your-subdomain.auth.eu-central-1.amazoncognito.com
+```
+
+Please note that the above information is not considered "_secret_" as it is used in the configuration of the web application, which will run in potentially any user's browser and it is therefore visible to potentially any user of the web application.
+
+Depending on how you configured your user pool and application, _**DO NOT**_ save a client secret here - it is not used in web applications. [Read more here...](https://www.oauth.com/oauth2-servers/client-registration/client-id-secret/)
+
+_**Step 2**_: Start an Nginx Docker Instance
 
 ```shell
 docker run --rm -p 8080:80 -v $(pwd):/usr/share/nginx/html nginx:latest
 ```
 
-_**Step 2**_: Point your browser to http://localhost:8080/index.html
+_**Step 3**_: Point your browser to http://localhost:8080/index.html
